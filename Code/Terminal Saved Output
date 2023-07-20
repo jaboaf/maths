@@ -1,0 +1,1670 @@
+Last login: Thu Sep  8 05:23:20 on ttys000
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+Erics-Air:~ EricAboaf$ julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.5.3 (2020-11-09)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
+
+julia> using Primes
+
+julia> n=100; P = primes(n)
+25-element Array{Int64,1}:
+  2
+  3
+  5
+  7
+ 11
+ 13
+ 17
+ 19
+ 23
+ 29
+  ⋮
+ 59
+ 61
+ 67
+ 71
+ 73
+ 79
+ 83
+ 89
+ 97
+
+julia> [count(x-> mod(x^(p-1), p^2)==1, P) for p in P]
+25-element Array{Int64,1}:
+ 11
+  7
+  2
+  5
+  1
+  2
+  0
+  0
+  0
+  0
+  ⋮
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+
+julia> using Plots
+
+julia> z(p)= exp(2*pi*im/p)
+z (generic function with 1 method)
+
+julia> Z(p) = exp.(2*pi*im* collect(1:p-1) /p)
+Z (generic function with 1 method)
+
+julia> Z(5)
+4-element Array{Complex{Float64},1}:
+ 0.30901699437494745 + 0.9510565162951535im
+ -0.8090169943749473 + 0.5877852522924732im
+ -0.8090169943749475 - 0.587785252292473im
+ 0.30901699437494723 - 0.9510565162951536im
+
+help?> subsets
+search: issubset
+
+Couldn't find subsets
+Perhaps you meant issubset, success or subtypes
+  No documentation found.
+
+  Binding subsets does not exist.
+
+julia> Base.product([0,1],[0,1],[0,1])
+Base.Iterators.ProductIterator{Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}}}(([0, 1], [0, 1], [0, 1]))
+
+julia> Base.product([0,1],[0,1],[0,1])[1]
+ERROR: MethodError: no method matching getindex(::Base.Iterators.ProductIterator{Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}}}, ::Int64)
+Stacktrace:
+ [1] top-level scope at REPL[10]:1
+
+julia> first(Base.product([0,1],[0,1],[0,1]))
+(0, 0, 0)
+
+julia> first(Base.product([0,1],[0,1],[0,1])) .* [1,2,3]
+3-element Array{Int64,1}:
+ 0
+ 0
+ 0
+
+julia> last(Base.product([0,1],[0,1],[0,1])) .* [1,2,3]
+ERROR: MethodError: no method matching lastindex(::Base.Iterators.ProductIterator{Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}}})
+Closest candidates are:
+  lastindex(::Cmd) at process.jl:638
+  lastindex(::Core.SimpleVector) at essentials.jl:600
+  lastindex(::Base64.Buffer) at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/Base64/src/buffer.jl:19
+  ...
+Stacktrace:
+ [1] last(::Base.Iterators.ProductIterator{Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}}}) at ./abstractarray.jl:362
+ [2] top-level scope at REPL[13]:1
+
+julia> repeat([0,1],3)
+6-element Array{Int64,1}:
+ 0
+ 1
+ 0
+ 1
+ 0
+ 1
+
+help?> repeat
+search: repeat RecipeData RecipesBase
+
+  repeat(A::AbstractArray, counts::Integer...)
+
+  Construct an array by repeating array A a given number of times in each dimension, specified by counts.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat([1, 2, 3], 2)
+  6-element Array{Int64,1}:
+   1
+   2
+   3
+   1
+   2
+   3
+  
+  julia> repeat([1, 2, 3], 2, 3)
+  6×3 Array{Int64,2}:
+   1  1  1
+   2  2  2
+   3  3  3
+   1  1  1
+   2  2  2
+   3  3  3
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  repeat(A::AbstractArray; inner=ntuple(x->1, ndims(A)), outer=ntuple(x->1, ndims(A)))
+
+  Construct an array by repeating the entries of A. The i-th element of inner specifies the number of times that
+  the individual entries of the i-th dimension of A should be repeated. The i-th element of outer specifies the
+  number of times that a slice along the i-th dimension of A should be repeated. If inner or outer are omitted,
+  no repetition is performed.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat(1:2, inner=2)
+  4-element Array{Int64,1}:
+   1
+   1
+   2
+   2
+  
+  julia> repeat(1:2, outer=2)
+  4-element Array{Int64,1}:
+   1
+   2
+   1
+   2
+  
+  julia> repeat([1 2; 3 4], inner=(2, 1), outer=(1, 3))
+  4×6 Array{Int64,2}:
+   1  2  1  2  1  2
+   1  2  1  2  1  2
+   3  4  3  4  3  4
+   3  4  3  4  3  4
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  repeat(s::AbstractString, r::Integer)
+
+  Repeat a string r times. This can be written as s^r.
+
+  See also: ^
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat("ha", 3)
+  "hahaha"
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  repeat(c::AbstractChar, r::Integer) -> String
+
+  Repeat a character r times. This can equivalently be accomplished by calling c^r.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat('A', 3)
+  "AAA"
+
+help?> subset
+search: issubset
+
+Couldn't find subset
+Perhaps you meant issubset, reset or subtypes
+  No documentation found.
+
+  Binding subset does not exist.
+
+help?> choose
+search:
+
+Couldn't find choose
+Perhaps you meant close, chomp, chop, chown, chroma, chmod, cosh, cos, cosc, cosd, const or coth
+  No documentation found.
+
+  Binding choose does not exist.
+
+julia> repeat([[0,1]],3)
+3-element Array{Array{Int64,1},1}:
+ [0, 1]
+ [0, 1]
+ [0, 1]
+
+julia> map( x -> sum( x .* Z(5)), Base.product(repeat([[0,1]],4)...) )
+2×2×2×2 Array{Complex{Float64},4}:
+[:, :, 1, 1] =
+      0.0+0.0im       -0.809017+0.587785im
+ 0.309017+0.951057im       -0.5+1.53884im
+
+[:, :, 2, 1] =
+ -0.809017-0.587785im  -1.61803+2.22045e-16im
+      -0.5+0.363271im  -1.30902+0.951057im
+
+[:, :, 1, 2] =
+ 0.309017-0.951057im          -0.5-0.363271im
+ 0.618034-1.11022e-16im  -0.190983+0.587785im
+
+[:, :, 2, 2] =
+      -0.5-1.53884im   -1.30902-0.951057im
+ -0.190983-0.587785im      -1.0+1.11022e-16im
+
+julia> collect(Base.product(repeat([[0,1]],4)...))
+2×2×2×2 Array{NTuple{4,Int64},4}:
+[:, :, 1, 1] =
+ (0, 0, 0, 0)  (0, 1, 0, 0)
+ (1, 0, 0, 0)  (1, 1, 0, 0)
+
+[:, :, 2, 1] =
+ (0, 0, 1, 0)  (0, 1, 1, 0)
+ (1, 0, 1, 0)  (1, 1, 1, 0)
+
+[:, :, 1, 2] =
+ (0, 0, 0, 1)  (0, 1, 0, 1)
+ (1, 0, 0, 1)  (1, 1, 0, 1)
+
+[:, :, 2, 2] =
+ (0, 0, 1, 1)  (0, 1, 1, 1)
+ (1, 0, 1, 1)  (1, 1, 1, 1)
+
+julia> map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))
+2×2×2×2 Array{Complex{Float64},4}:
+[:, :, 1, 1] =
+      0.0+0.0im       -0.809017+0.587785im
+ 0.309017+0.951057im       -0.5+1.53884im
+
+[:, :, 2, 1] =
+ -0.809017-0.587785im  -1.61803+2.22045e-16im
+      -0.5+0.363271im  -1.30902+0.951057im
+
+[:, :, 1, 2] =
+ 0.309017-0.951057im          -0.5-0.363271im
+ 0.618034-1.11022e-16im  -0.190983+0.587785im
+
+[:, :, 2, 2] =
+      -0.5-1.53884im   -1.30902-0.951057im
+ -0.190983-0.587785im      -1.0+1.11022e-16im
+
+julia> vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...)))
+16-element Array{Complex{Float64},1}:
+                  0.0 + 0.0im
+  0.30901699437494745 + 0.9510565162951535im
+  -0.8090169943749473 + 0.5877852522924732im
+  -0.4999999999999999 + 1.5388417685876268im
+  -0.8090169943749475 - 0.587785252292473im
+                 -0.5 + 0.3632712640026805im
+   -1.618033988749895 + 2.220446049250313e-16im
+  -1.3090169943749475 + 0.9510565162951538im
+  0.30901699437494723 - 0.9510565162951536im
+   0.6180339887498947 - 1.1102230246251565e-16im
+  -0.5000000000000001 - 0.3632712640026804im
+ -0.19098300562505266 + 0.5877852522924731im
+  -0.5000000000000002 - 1.5388417685876266im
+ -0.19098300562505277 - 0.5877852522924731im
+  -1.3090169943749477 - 0.9510565162951534im
+  -1.0000000000000002 + 1.1102230246251565e-16im
+
+julia> round(vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))), .001)
+ERROR: MethodError: no method matching round(::Array{Complex{Float64},1}, ::Float64)
+Closest candidates are:
+  round(::Type{T}, ::AbstractFloat) where T<:Integer at float.jl:367
+  round(::Type{T}, ::AbstractFloat, ::RoundingMode) where T<:Integer at floatfuncs.jl:123
+  round(::Type{T}, ::Any) where T>:Missing at missing.jl:136
+  ...
+Stacktrace:
+ [1] top-level scope at REPL[23]:1
+
+julia> round(vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))), 2)
+ERROR: MethodError: no method matching round(::Array{Complex{Float64},1}, ::Int64)
+Closest candidates are:
+  round(::Type{T}, ::Integer) where T<:Integer at int.jl:593
+  round(::Type{T}, ::Any) where T>:Missing at missing.jl:136
+  round(::Type{T}, ::Any, ::RoundingMode) where T>:Missing at missing.jl:136
+Stacktrace:
+ [1] top-level scope at REPL[24]:1
+
+julia> plot(vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))))
+
+julia> scatter(vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))))
+
+julia> scatter(vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(5)),Base.product(repeat([[0,1]],4)...))), aspect_ratio=1)
+
+julia> Z(5)
+4-element Array{Complex{Float64},1}:
+ 0.30901699437494745 + 0.9510565162951535im
+ -0.8090169943749473 + 0.5877852522924732im
+ -0.8090169943749475 - 0.587785252292473im
+ 0.30901699437494723 - 0.9510565162951536im
+
+julia> scatter(vec(map( x->sum(x .* Z(3)),Base.product(repeat([[0,1]],2)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(-1*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(im*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(-im*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(z(7)*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(z(7)^2*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(z(7)^3*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(z(7)^4*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(z(7)^5*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(z(7)^6*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!( im *vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!( z(14) *vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(-1*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter(vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> scatter!(-1*vec(map( x->sum(x .* Z(7)),Base.product(repeat([[0,1]],6)...))), aspect_ratio=1)
+
+julia> Base.Cartesian(2,2,2)
+ERROR: MethodError: objects of type Module are not callable
+Stacktrace:
+ [1] top-level scope at REPL[50]:1
+
+julia> Base.CartesianIndex(2,2,2)
+CartesianIndex(2, 2, 2)
+
+julia> Base.CartesianIndices(2,2,2)
+ERROR: MethodError: no method matching CartesianIndices(::Int64, ::Int64, ::Int64)
+Stacktrace:
+ [1] top-level scope at REPL[52]:1
+
+help?> cartesian
+search: CartesianIndex CartesianIndices IndexCartesian
+
+Couldn't find cartesian
+Perhaps you meant factorial
+  No documentation found.
+
+  Binding cartesian does not exist.
+
+help?> carte
+search: CartesianIndex CartesianIndices IndexCartesian code_warntype @code_warntype Cwchar_t scatterhist
+
+Couldn't find carte
+Perhaps you meant cat, cbrt, parse, scatter, catch, hcat, vcat, cgrad, Core, center, curves, close, cot or cotd
+  No documentation found.
+
+  Binding carte does not exist.
+
+help?> cartesianIndices
+search: CartesianIndices CartesianIndex
+
+Couldn't find cartesianIndices
+Perhaps you meant CartesianIndices or CartesianIndex
+  No documentation found.
+
+  Binding cartesianIndices does not exist.
+
+help?> ?CartesianIndices
+search: CartesianIndices CartesianIndex
+
+  CartesianIndices(sz::Dims) -> R
+  CartesianIndices((istart:istop, jstart:jstop, ...)) -> R
+
+  Define a region R spanning a multidimensional rectangular range of integer indices. These are most commonly
+  encountered in the context of iteration, where for I in R ... end will return CartesianIndex indices I
+  equivalent to the nested loops
+
+  for j = jstart:jstop
+      for i = istart:istop
+          ...
+      end
+  end
+
+  Consequently these can be useful for writing algorithms that work in arbitrary dimensions.
+
+  CartesianIndices(A::AbstractArray) -> R
+
+  As a convenience, constructing a CartesianIndices from an array makes a range of its indices.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> foreach(println, CartesianIndices((2, 2, 2)))
+  CartesianIndex(1, 1, 1)
+  CartesianIndex(2, 1, 1)
+  CartesianIndex(1, 2, 1)
+  CartesianIndex(2, 2, 1)
+  CartesianIndex(1, 1, 2)
+  CartesianIndex(2, 1, 2)
+  CartesianIndex(1, 2, 2)
+  CartesianIndex(2, 2, 2)
+  
+  julia> CartesianIndices(fill(1, (2,3)))
+  2×3 CartesianIndices{2,Tuple{Base.OneTo{Int64},Base.OneTo{Int64}}}:
+   CartesianIndex(1, 1)  CartesianIndex(1, 2)  CartesianIndex(1, 3)
+   CartesianIndex(2, 1)  CartesianIndex(2, 2)  CartesianIndex(2, 3)
+
+  Conversion between linear and cartesian indices
+  =================================================
+
+  Linear index to cartesian index conversion exploits the fact that a CartesianIndices is an AbstractArray and
+  can be indexed linearly:
+
+  julia> cartesian = CartesianIndices((1:3, 1:2))
+  3×2 CartesianIndices{2,Tuple{UnitRange{Int64},UnitRange{Int64}}}:
+   CartesianIndex(1, 1)  CartesianIndex(1, 2)
+   CartesianIndex(2, 1)  CartesianIndex(2, 2)
+   CartesianIndex(3, 1)  CartesianIndex(3, 2)
+  
+  julia> cartesian[4]
+  CartesianIndex(1, 2)
+
+  Broadcasting
+  ==============
+
+  CartesianIndices support broadcasting arithmetic (+ and -) with a CartesianIndex.
+
+  │ Julia 1.1
+  │
+  │  Broadcasting of CartesianIndices requires at least Julia 1.1.
+
+  julia> CIs = CartesianIndices((2:3, 5:6))
+  2×2 CartesianIndices{2,Tuple{UnitRange{Int64},UnitRange{Int64}}}:
+   CartesianIndex(2, 5)  CartesianIndex(2, 6)
+   CartesianIndex(3, 5)  CartesianIndex(3, 6)
+  
+  julia> CI = CartesianIndex(3, 4)
+  CartesianIndex(3, 4)
+  
+  julia> CIs .+ CI
+  2×2 CartesianIndices{2,Tuple{UnitRange{Int64},UnitRange{Int64}}}:
+   CartesianIndex(5, 9)  CartesianIndex(5, 10)
+   CartesianIndex(6, 9)  CartesianIndex(6, 10)
+
+  For cartesian to linear index conversion, see LinearIndices.
+
+julia> CartesianIndices(repeat(2,3))
+ERROR: MethodError: no method matching repeat(::Int64, ::Int64)
+Closest candidates are:
+  repeat(::AbstractArray{T,1} where T, ::Integer) at abstractarraymath.jl:289
+  repeat(::Union{AbstractArray{T,1}, AbstractArray{T,2}} where T, ::Integer) at abstractarraymath.jl:275
+  repeat(::Union{AbstractArray{T,1}, AbstractArray{T,2}} where T, ::Integer, ::Integer) at abstractarraymath.jl:275
+  ...
+Stacktrace:
+ [1] top-level scope at REPL[57]:1
+
+julia> repeat
+repeat (generic function with 9 methods)
+
+help?> repeat
+search: repeat RecipeData RecipesBase
+
+  repeat(A::AbstractArray, counts::Integer...)
+
+  Construct an array by repeating array A a given number of times in each dimension, specified by counts.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat([1, 2, 3], 2)
+  6-element Array{Int64,1}:
+   1
+   2
+   3
+   1
+   2
+   3
+  
+  julia> repeat([1, 2, 3], 2, 3)
+  6×3 Array{Int64,2}:
+   1  1  1
+   2  2  2
+   3  3  3
+   1  1  1
+   2  2  2
+   3  3  3
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  repeat(A::AbstractArray; inner=ntuple(x->1, ndims(A)), outer=ntuple(x->1, ndims(A)))
+
+  Construct an array by repeating the entries of A. The i-th element of inner specifies the number of times that
+  the individual entries of the i-th dimension of A should be repeated. The i-th element of outer specifies the
+  number of times that a slice along the i-th dimension of A should be repeated. If inner or outer are omitted,
+  no repetition is performed.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat(1:2, inner=2)
+  4-element Array{Int64,1}:
+   1
+   1
+   2
+   2
+  
+  julia> repeat(1:2, outer=2)
+  4-element Array{Int64,1}:
+   1
+   2
+   1
+   2
+  
+  julia> repeat([1 2; 3 4], inner=(2, 1), outer=(1, 3))
+  4×6 Array{Int64,2}:
+   1  2  1  2  1  2
+   1  2  1  2  1  2
+   3  4  3  4  3  4
+   3  4  3  4  3  4
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  repeat(s::AbstractString, r::Integer)
+
+  Repeat a string r times. This can be written as s^r.
+
+  See also: ^
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat("ha", 3)
+  "hahaha"
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  repeat(c::AbstractChar, r::Integer) -> String
+
+  Repeat a character r times. This can equivalently be accomplished by calling c^r.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> repeat('A', 3)
+  "AAA"
+
+julia> ones(3)
+3-element Array{Float64,1}:
+ 1.0
+ 1.0
+ 1.0
+
+julia> ones(Int,3)
+3-element Array{Int64,1}:
+ 1
+ 1
+ 1
+
+julia> ones(Int,3)*2
+3-element Array{Int64,1}:
+ 2
+ 2
+ 2
+
+julia> CartesianIndices(ones(Int,3)*2)
+3-element CartesianIndices{1,Tuple{Base.OneTo{Int64}}}:
+ CartesianIndex(1,)
+ CartesianIndex(2,)
+ CartesianIndex(3,)
+
+help?> ntuple
+search: ntuple NTuple NamedTuple @NamedTuple
+
+  ntuple(f::Function, n::Integer)
+
+  Create a tuple of length n, computing each element as f(i), where i is the index of the element.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> ntuple(i -> 2*i, 4)
+  (2, 4, 6, 8)
+
+julia> ntuple(2,3)
+ERROR: MethodError: objects of type Int64 are not callable
+Stacktrace:
+ [1] ntuple(::Int64, ::Int64) at ./ntuple.jl:18
+ [2] top-level scope at REPL[65]:1
+
+julia> ntuple(x->2,3)
+(2, 2, 2)
+
+help?> ones
+search: ones leading_ones trailing_ones countlines count_ones to_indices scalefontsizes resetfontsizes RoundNearest
+
+  ones([T=Float64,] dims::Tuple)
+  ones([T=Float64,] dims...)
+
+  Create an Array, with element type T, of all ones with size specified by dims. See also: fill, zeros.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> ones(1,2)
+  1×2 Array{Float64,2}:
+   1.0  1.0
+  
+  julia> ones(ComplexF64, 2, 3)
+  2×3 Array{Complex{Float64},2}:
+   1.0+0.0im  1.0+0.0im  1.0+0.0im
+   1.0+0.0im  1.0+0.0im  1.0+0.0im
+
+help?> fill
+search: fill fill! finally findall filter filter! filesize filemode isfile @__FILE__ fieldtype fieldname fieldtypes
+
+  fill(x, dims::Tuple)
+  fill(x, dims...)
+
+  Create an array filled with the value x. For example, fill(1.0, (5,5)) returns a 5×5 array of floats, with each
+  element initialized to 1.0.
+
+  dims may be specified as either a tuple or a sequence of arguments. For example, the common idiom fill(x)
+  creates a zero-dimensional array containing the single value x.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> fill(1.0, (2,3))
+  2×3 Array{Float64,2}:
+   1.0  1.0  1.0
+   1.0  1.0  1.0
+  
+  julia> fill(42)
+  0-dimensional Array{Int64,0}:
+  42
+
+  If x is an object reference, all elements will refer to the same object:
+
+  julia> A = fill(zeros(2), 2);
+  
+  julia> A[1][1] = 42; # modifies both A[1][1] and A[2][1]
+  
+  julia> A
+  2-element Array{Array{Float64,1},1}:
+   [42.0, 0.0]
+   [42.0, 0.0]
+
+julia> CartesianIndices(ntuple(x->2,3) )
+2×2×2 CartesianIndices{3,Tuple{Base.OneTo{Int64},Base.OneTo{Int64},Base.OneTo{Int64}}}:
+[:, :, 1] =
+ CartesianIndex(1, 1, 1)  CartesianIndex(1, 2, 1)
+ CartesianIndex(2, 1, 1)  CartesianIndex(2, 2, 1)
+
+[:, :, 2] =
+ CartesianIndex(1, 1, 2)  CartesianIndex(1, 2, 2)
+ CartesianIndex(2, 1, 2)  CartesianIndex(2, 2, 2)
+
+julia> CartesianIndices(2,2,2)
+ERROR: MethodError: no method matching CartesianIndices(::Int64, ::Int64, ::Int64)
+Stacktrace:
+ [1] top-level scope at REPL[70]:1
+
+help?> CartesianIndices
+search: CartesianIndices CartesianIndex
+
+  CartesianIndices(sz::Dims) -> R
+  CartesianIndices((istart:istop, jstart:jstop, ...)) -> R
+
+  Define a region R spanning a multidimensional rectangular range of integer indices. These are most commonly
+  encountered in the context of iteration, where for I in R ... end will return CartesianIndex indices I
+  equivalent to the nested loops
+
+  for j = jstart:jstop
+      for i = istart:istop
+          ...
+      end
+  end
+
+  Consequently these can be useful for writing algorithms that work in arbitrary dimensions.
+
+  CartesianIndices(A::AbstractArray) -> R
+
+  As a convenience, constructing a CartesianIndices from an array makes a range of its indices.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> foreach(println, CartesianIndices((2, 2, 2)))
+  CartesianIndex(1, 1, 1)
+  CartesianIndex(2, 1, 1)
+  CartesianIndex(1, 2, 1)
+  CartesianIndex(2, 2, 1)
+  CartesianIndex(1, 1, 2)
+  CartesianIndex(2, 1, 2)
+  CartesianIndex(1, 2, 2)
+  CartesianIndex(2, 2, 2)
+  
+  julia> CartesianIndices(fill(1, (2,3)))
+  2×3 CartesianIndices{2,Tuple{Base.OneTo{Int64},Base.OneTo{Int64}}}:
+   CartesianIndex(1, 1)  CartesianIndex(1, 2)  CartesianIndex(1, 3)
+   CartesianIndex(2, 1)  CartesianIndex(2, 2)  CartesianIndex(2, 3)
+
+  Conversion between linear and cartesian indices
+  =================================================
+
+  Linear index to cartesian index conversion exploits the fact that a CartesianIndices is an AbstractArray and
+  can be indexed linearly:
+
+  julia> cartesian = CartesianIndices((1:3, 1:2))
+  3×2 CartesianIndices{2,Tuple{UnitRange{Int64},UnitRange{Int64}}}:
+   CartesianIndex(1, 1)  CartesianIndex(1, 2)
+   CartesianIndex(2, 1)  CartesianIndex(2, 2)
+   CartesianIndex(3, 1)  CartesianIndex(3, 2)
+  
+  julia> cartesian[4]
+  CartesianIndex(1, 2)
+
+  Broadcasting
+  ==============
+
+  CartesianIndices support broadcasting arithmetic (+ and -) with a CartesianIndex.
+
+  │ Julia 1.1
+  │
+  │  Broadcasting of CartesianIndices requires at least Julia 1.1.
+
+  julia> CIs = CartesianIndices((2:3, 5:6))
+  2×2 CartesianIndices{2,Tuple{UnitRange{Int64},UnitRange{Int64}}}:
+   CartesianIndex(2, 5)  CartesianIndex(2, 6)
+   CartesianIndex(3, 5)  CartesianIndex(3, 6)
+  
+  julia> CI = CartesianIndex(3, 4)
+  CartesianIndex(3, 4)
+  
+  julia> CIs .+ CI
+  2×2 CartesianIndices{2,Tuple{UnitRange{Int64},UnitRange{Int64}}}:
+   CartesianIndex(5, 9)  CartesianIndex(5, 10)
+   CartesianIndex(6, 9)  CartesianIndex(6, 10)
+
+  For cartesian to linear index conversion, see LinearIndices.
+
+julia> CartesianIndices(ntuple(x->2,p) )
+ERROR: UndefVarError: p not defined
+Stacktrace:
+ [1] top-level scope at REPL[72]:1
+
+julia> CartesianIndices(ntuple(x->2,3) )
+2×2×2 CartesianIndices{3,Tuple{Base.OneTo{Int64},Base.OneTo{Int64},Base.OneTo{Int64}}}:
+[:, :, 1] =
+ CartesianIndex(1, 1, 1)  CartesianIndex(1, 2, 1)
+ CartesianIndex(2, 1, 1)  CartesianIndex(2, 2, 1)
+
+[:, :, 2] =
+ CartesianIndex(1, 1, 2)  CartesianIndex(1, 2, 2)
+ CartesianIndex(2, 1, 2)  CartesianIndex(2, 2, 2)
+
+julia> first*CartesianIndices(ntuple(x->2,3) ))
+ERROR: syntax: extra token ")" after end of expression
+Stacktrace:
+ [1] top-level scope at none:1
+
+julia> first(CartesianIndices(ntuple(x->2,3) ))
+CartesianIndex(1, 1, 1)
+
+julia> first(CartesianIndices(ntuple(x->2,3) )) .*2
+ERROR: iteration is deliberately unsupported for CartesianIndex. Use `I` rather than `I...`, or use `Tuple(I)...`
+Stacktrace:
+ [1] error(::String) at ./error.jl:33
+ [2] iterate(::CartesianIndex{3}) at ./multidimensional.jl:166
+ [3] copyto!(::Array{Int64,1}, ::CartesianIndex{3}) at ./abstractarray.jl:733
+ [4] _collect(::UnitRange{Int64}, ::CartesianIndex{3}, ::Base.HasEltype, ::Base.HasLength) at ./array.jl:630
+ [5] collect(::CartesianIndex{3}) at ./array.jl:624
+ [6] broadcastable(::CartesianIndex{3}) at ./broadcast.jl:682
+ [7] broadcasted(::Function, ::CartesianIndex{3}, ::Int64) at ./broadcast.jl:1260
+ [8] top-level scope at REPL[76]:1
+
+julia> first(CartesianIndices(ntuple(x->2,3) )) * 2
+CartesianIndex(2, 2, 2)
+
+julia> sumfirst(CartesianIndices(ntuple(x->2,3) )) * 2)
+ERROR: syntax: extra token ")" after end of expression
+Stacktrace:
+ [1] top-level scope at none:1
+
+julia> sum(\first(CartesianIndices(ntuple(x->2,3) )) * 2)
+ERROR: syntax: "\" is not a unary operator
+Stacktrace:
+ [1] top-level scope at none:1
+
+julia> sum(first(CartesianIndices(ntuple(x->2,3) )) * 2)
+ERROR: iteration is deliberately unsupported for CartesianIndex. Use `I` rather than `I...`, or use `Tuple(I)...`
+Stacktrace:
+ [1] error(::String) at ./error.jl:33
+ [2] iterate(::CartesianIndex{3}) at ./multidimensional.jl:166
+ [3] _foldl_impl(::Base.BottomRF{typeof(Base.add_sum)}, ::Base._InitialValue, ::CartesianIndex{3}) at ./reduce.jl:56
+ [4] foldl_impl(::Base.BottomRF{typeof(Base.add_sum)}, ::NamedTuple{(),Tuple{}}, ::CartesianIndex{3}) at ./reduce.jl:48
+ [5] mapfoldl_impl(::typeof(identity), ::typeof(Base.add_sum), ::NamedTuple{(),Tuple{}}, ::CartesianIndex{3}) at ./reduce.jl:44
+ [6] mapfoldl(::Function, ::Function, ::CartesianIndex{3}; kw::Base.Iterators.Pairs{Union{},Union{},Tuple{},NamedTuple{(),Tuple{}}}) at ./reduce.jl:160
+ [7] mapfoldl(::Function, ::Function, ::CartesianIndex{3}) at ./reduce.jl:160
+ [8] mapreduce(::Function, ::Function, ::CartesianIndex{3}; kw::Base.Iterators.Pairs{Union{},Union{},Tuple{},NamedTuple{(),Tuple{}}}) at ./reduce.jl:287
+ [9] mapreduce(::Function, ::Function, ::CartesianIndex{3}) at ./reduce.jl:287
+ [10] sum(::Function, ::CartesianIndex{3}) at ./reduce.jl:494
+ [11] sum(::CartesianIndex{3}) at ./reduce.jl:511
+ [12] top-level scope at REPL[80]:1
+
+julia> map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)) )
+4-element Array{StepRangeLen{Complex{Float64},Complex{Float64},Complex{Float64}},1}:
+ 0.0 + 0.0im:-1.0000000000000002 + 1.1102230246251565e-16im:-1.0000000000000002 + 1.1102230246251565e-16im
+ 0.0 + 0.0im:-1.0000000000000002 + 1.1102230246251565e-16im:-1.0000000000000002 + 1.1102230246251565e-16im
+ 0.0 + 0.0im:-1.0000000000000002 + 1.1102230246251565e-16im:-1.0000000000000002 + 1.1102230246251565e-16im
+ 0.0 + 0.0im:-1.0000000000000002 + 1.1102230246251565e-16im:-1.0000000000000002 + 1.1102230246251565e-16im
+
+julia> Base.product(repeat([0:1],4))
+Base.Iterators.ProductIterator{Tuple{Array{UnitRange{Int64},1}}}((UnitRange{Int64}[0:1, 0:1, 0:1, 0:1],))
+
+julia> repeat([0:1],4)
+4-element Array{UnitRange{Int64},1}:
+ 0:1
+ 0:1
+ 0:1
+ 0:1
+
+julia> map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) )
+2×2×2×2 Array{Complex{Float64},4}:
+[:, :, 1, 1] =
+      0.0+0.0im       -0.809017+0.587785im
+ 0.309017+0.951057im       -0.5+1.53884im
+
+[:, :, 2, 1] =
+ -0.809017-0.587785im  -1.61803+2.22045e-16im
+      -0.5+0.363271im  -1.30902+0.951057im
+
+[:, :, 1, 2] =
+ 0.309017-0.951057im          -0.5-0.363271im
+ 0.618034-1.11022e-16im  -0.190983+0.587785im
+
+[:, :, 2, 2] =
+      -0.5-1.53884im   -1.30902-0.951057im
+ -0.190983-0.587785im      -1.0+1.11022e-16im
+
+julia> scatter(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) ))
+ERROR: MethodError: no method matching expand_extrema!(::Plots.Axis, ::Array{Float64,4})
+Closest candidates are:
+  expand_extrema!(::Plots.Axis, ::Bool) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/axes.jl:388
+  expand_extrema!(::Plots.Axis, ::Nothing) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/axes.jl:387
+  expand_extrema!(::Plots.Axis, ::Number) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/axes.jl:382
+  ...
+Stacktrace:
+ [1] expand_extrema!(::Plots.Subplot{Plots.GRBackend}, ::RecipesPipeline.DefaultsDict) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/axes.jl:430
+ [2] _expand_subplot_extrema(::Plots.Subplot{Plots.GRBackend}, ::RecipesPipeline.DefaultsDict, ::Symbol) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/pipeline.jl:349
+ [3] add_series!(::Plots.Plot{Plots.GRBackend}, ::RecipesPipeline.DefaultsDict) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/pipeline.jl:300
+ [4] _process_seriesrecipe(::Any, ::Any) at /Users/EricAboaf/.julia/packages/RecipesPipeline/bexlW/src/series_recipe.jl:46
+ [5] _process_seriesrecipes!(::Any, ::Any) at /Users/EricAboaf/.julia/packages/RecipesPipeline/bexlW/src/series_recipe.jl:27
+ [6] recipe_pipeline!(::Any, ::Any, ::Any) at /Users/EricAboaf/.julia/packages/RecipesPipeline/bexlW/src/RecipesPipeline.jl:97
+ [7] _plot!(::Plots.Plot, ::Any, ::Any) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/plot.jl:172
+ [8] plot(::Any; kw::Any) at /Users/EricAboaf/.julia/packages/Plots/iYDwd/src/plot.jl:58
+ [9] scatter(::Any; kw::Any) at /Users/EricAboaf/.julia/packages/RecipesBase/qpxEX/src/RecipesBase.jl:410
+ [10] scatter(::Any) at /Users/EricAboaf/.julia/packages/RecipesBase/qpxEX/src/RecipesBase.jl:410
+ [11] top-level scope at REPL[85]:1
+
+julia> scatter(map(x-> sum( Z(5) .* x), vec(Base.product(repeat([0:1],4)...)) ))
+ERROR: MethodError: no method matching vec(::Base.Iterators.ProductIterator{NTuple{4,UnitRange{Int64}}})
+Closest candidates are:
+  vec(::LinearAlgebra.Transpose{T,var"#s828"} where var"#s828"<:(AbstractArray{T,1} where T) where T) at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/LinearAlgebra/src/adjtrans.jl:226
+  vec(::LinearAlgebra.Adjoint{var"#s828",var"#s8281"} where var"#s8281"<:(AbstractArray{T,1} where T) where var"#s828"<:Real) at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/LinearAlgebra/src/adjtrans.jl:227
+  vec(::SparseArrays.AbstractSparseArray{Tv,Ti,1} where Ti where Tv) at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/SparseArrays/src/sparsevector.jl:911
+  ...
+Stacktrace:
+ [1] top-level scope at REPL[86]:1
+
+julia> scatter(vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) )))
+
+julia> scatter(-1*vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) )))
+
+julia> scatter(vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) )))
+
+julia> scatter!(-1*vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) )))
+
+julia> scatter!(-1*vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) ))[2:end])
+
+julia> scatter(-1*vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) ))[2:end])
+
+julia> scatter(-1*vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter(vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter!(-1*vec(map(x-> sum( Z(3) .* x), Base.product(repeat([0:1],2)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter(vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter(vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) ))[1:end], aspect_ratio=1)
+
+julia> scatter(vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter!(-1*vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter!(-1*vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter(-1*vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter!(vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,marker_size=0.1)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,marker_size=0.05)
+
+help?> marker_size
+search:
+
+Couldn't find marker_size
+Perhaps you meant filesize
+  No documentation found.
+
+  Binding marker_size does not exist.
+
+help?> markersize
+search:
+
+Couldn't find markersize
+Perhaps you meant filesize
+  No documentation found.
+
+  Binding markersize does not exist.
+
+help?> scatter
+search: scatter scatter! scatter3d scatter3d! scatterhist scatterhist! base_colorant_type
+
+  scatter(x,y)
+  scatter!(x,y)
+
+  Make a scatter plot of y vs x.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> scatter([1,2,3],[4,5,6],markersize=[3,4,5],markercolor=[:red,:green,:blue])
+  julia> scatter([(1,4),(2,5),(3,6)])
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=0.05)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=0.1)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=0.3)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=0.5)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=1)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=1.2)
+
+julia> scatter(vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=1)
+
+julia> scatter!(-1*vec(map(x-> sum( Z(11) .* x), Base.product(repeat([0:1],10)...) ))[2:end], aspect_ratio=1,markersize=1)
+
+julia> plot!(xlims=[-1,1],ylims=[-1,1])
+
+help?> combinations
+search:
+
+Couldn't find combinations
+Perhaps you meant count_ones
+  No documentation found.
+
+  Binding combinations does not exist.
+
+julia> map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],)...) ))
+ERROR: syntax: extra token ")" after end of expression
+Stacktrace:
+ [1] top-level scope at none:1
+
+julia> map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],)...) )
+2-element Array{Complex{Float64},1}:
+                 0.0 + 0.0im
+ -1.0000000000000002 + 1.1102230246251565e-16im
+
+julia> map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...) )
+2×2×2×2 Array{Complex{Float64},4}:
+[:, :, 1, 1] =
+      0.0+0.0im       -0.809017+0.587785im
+ 0.309017+0.951057im       -0.5+1.53884im
+
+[:, :, 2, 1] =
+ -0.809017-0.587785im  -1.61803+2.22045e-16im
+      -0.5+0.363271im  -1.30902+0.951057im
+
+[:, :, 1, 2] =
+ 0.309017-0.951057im          -0.5-0.363271im
+ 0.618034-1.11022e-16im  -0.190983+0.587785im
+
+[:, :, 2, 2] =
+      -0.5-1.53884im   -1.30902-0.951057im
+ -0.190983-0.587785im      -1.0+1.11022e-16im
+
+julia> map(x-> sum( Z(5) .* x), Base.product([-1,1],repeat([0:1],4)...) )
+ERROR: DimensionMismatch("arrays could not be broadcast to a common size; got a dimension with lengths 4 and 5")
+Stacktrace:
+ [1] _bcs1 at ./broadcast.jl:501 [inlined]
+ [2] _bcs at ./broadcast.jl:495 [inlined]
+ [3] broadcast_shape at ./broadcast.jl:489 [inlined]
+ [4] combine_axes at ./broadcast.jl:484 [inlined]
+ [5] instantiate at ./broadcast.jl:266 [inlined]
+ [6] materialize at ./broadcast.jl:837 [inlined]
+ [7] (::var"#147#148")(::NTuple{5,Int64}) at ./REPL[122]:1
+ [8] iterate at ./generator.jl:47 [inlined]
+ [9] collect(::Base.Generator{Base.Iterators.ProductIterator{Tuple{Array{Int64,1},UnitRange{Int64},UnitRange{Int64},UnitRange{Int64},UnitRange{Int64}}},var"#147#148"}) at ./array.jl:686
+ [10] map(::Function, ::Base.Iterators.ProductIterator{Tuple{Array{Int64,1},UnitRange{Int64},UnitRange{Int64},UnitRange{Int64},UnitRange{Int64}}}) at ./abstractarray.jl:2188
+ [11] top-level scope at REPL[122]:1
+
+julia> map(x-> sum( Z(5) .* x), Base.product([[-1,1],repeat([0:1],4)]...) )
+ERROR: DimensionMismatch("arrays could not be broadcast to a common size; got a dimension with lengths 4 and 2")
+Stacktrace:
+ [1] _bcs1 at ./broadcast.jl:501 [inlined]
+ [2] _bcs at ./broadcast.jl:495 [inlined]
+ [3] broadcast_shape at ./broadcast.jl:489 [inlined]
+ [4] combine_axes at ./broadcast.jl:484 [inlined]
+ [5] instantiate at ./broadcast.jl:266 [inlined]
+ [6] materialize at ./broadcast.jl:837 [inlined]
+ [7] (::var"#149#150")(::Tuple{Int64,UnitRange{Int64}}) at ./REPL[123]:1
+ [8] iterate at ./generator.jl:47 [inlined]
+ [9] collect(::Base.Generator{Base.Iterators.ProductIterator{Tuple{Array{Int64,1},Array{UnitRange{Int64},1}}},var"#149#150"}) at ./array.jl:686
+ [10] map(::Function, ::Base.Iterators.ProductIterator{Tuple{Array{Int64,1},Array{UnitRange{Int64},1}}}) at ./abstractarray.jl:2188
+ [11] top-level scope at REPL[123]:1
+
+julia> map(x-> x[1]*sum( Z(5) .* x[2:end]), Base.product([[-1,1],repeat([0:1],4)]...) )
+2×4 Array{StepRangeLen{Complex{Float64},Complex{Float64},Complex{Float64}},2}:
+ 0.0 - 0.0im:1.0000000000000002 - 1.1102230246251565e-16im:1.0000000000000002 - 1.1102230246251565e-16im    …  0.0 - 0.0im:1.0000000000000002 - 1.1102230246251565e-16im:1.0000000000000002 - 1.1102230246251565e-16im
+ 0.0 + 0.0im:-1.0000000000000002 + 1.1102230246251565e-16im:-1.0000000000000002 + 1.1102230246251565e-16im     0.0 + 0.0im:-1.0000000000000002 + 1.1102230246251565e-16im:-1.0000000000000002 + 1.1102230246251565e-16im
+
+julia> [[-1,1],repeat([0:1],4)]
+2-element Array{Array{T,1} where T,1}:
+ [-1, 1]
+ UnitRange{Int64}[0:1, 0:1, 0:1, 0:1]
+
+julia> map(x-> (-1)^x[1] * sum( Z(5) .* x[2:end]), Base.product(repeat([0:1],5)...) )
+2×2×2×2×2 Array{Complex{Float64},5}:
+[:, :, 1, 1, 1] =
+  0.0+0.0im   0.309017+0.951057im
+ -0.0-0.0im  -0.309017-0.951057im
+
+[:, :, 2, 1, 1] =
+ -0.809017+0.587785im  -0.5+1.53884im
+  0.809017-0.587785im   0.5-1.53884im
+
+[:, :, 1, 2, 1] =
+ -0.809017-0.587785im  -0.5+0.363271im
+  0.809017+0.587785im   0.5-0.363271im
+
+[:, :, 2, 2, 1] =
+ -1.61803+2.22045e-16im  -1.30902+0.951057im
+  1.61803-2.22045e-16im   1.30902-0.951057im
+
+[:, :, 1, 1, 2] =
+  0.309017-0.951057im   0.618034-1.11022e-16im
+ -0.309017+0.951057im  -0.618034+1.11022e-16im
+
+[:, :, 2, 1, 2] =
+ -0.5-0.363271im  -0.190983+0.587785im
+  0.5+0.363271im   0.190983-0.587785im
+
+[:, :, 1, 2, 2] =
+ -0.5-1.53884im  -0.190983-0.587785im
+  0.5+1.53884im   0.190983+0.587785im
+
+[:, :, 2, 2, 2] =
+ -1.30902-0.951057im  -1.0+1.11022e-16im
+  1.30902+0.951057im   1.0-1.11022e-16im
+
+julia> vcat([w * vec(map(x-> sum( Z(5) .* x[2:end]), Base.product(repeat([0:1],4)...)[2:end] )) for w in [-1,1]])
+ERROR: MethodError: no method matching lastindex(::Base.Iterators.ProductIterator{NTuple{4,UnitRange{Int64}}})
+Closest candidates are:
+  lastindex(::Cmd) at process.jl:638
+  lastindex(::Core.SimpleVector) at essentials.jl:600
+  lastindex(::Base64.Buffer) at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/Base64/src/buffer.jl:19
+  ...
+Stacktrace:
+ [1] (::var"#155#157")(::Int64) at ./none:0
+ [2] iterate at ./generator.jl:47 [inlined]
+ [3] collect(::Base.Generator{Array{Int64,1},var"#155#157"}) at ./array.jl:686
+ [4] top-level scope at REPL[127]:1
+
+julia> vcat([w * vec(map(x-> sum( Z(5) .* x[2:end]), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]])
+ERROR: DimensionMismatch("arrays could not be broadcast to a common size; got a dimension with lengths 4 and 3")
+Stacktrace:
+ [1] _bcs1 at ./broadcast.jl:501 [inlined]
+ [2] _bcs at ./broadcast.jl:495 [inlined]
+ [3] broadcast_shape at ./broadcast.jl:489 [inlined]
+ [4] combine_axes at ./broadcast.jl:484 [inlined]
+ [5] instantiate at ./broadcast.jl:266 [inlined]
+ [6] materialize at ./broadcast.jl:837 [inlined]
+ [7] (::var"#160#162")(::NTuple{4,Int64}) at ./REPL[128]:1
+ [8] iterate at ./generator.jl:47 [inlined]
+ [9] collect(::Base.Generator{Base.Iterators.ProductIterator{NTuple{4,UnitRange{Int64}}},var"#160#162"}) at ./array.jl:686
+ [10] map(::Function, ::Base.Iterators.ProductIterator{NTuple{4,UnitRange{Int64}}}) at ./abstractarray.jl:2188
+ [11] (::var"#159#161")(::Int64) at ./none:0
+ [12] iterate at ./generator.jl:47 [inlined]
+ [13] collect(::Base.Generator{Array{Int64,1},var"#159#161"}) at ./array.jl:686
+ [14] top-level scope at REPL[128]:1
+
+julia> vcat([w * vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]])
+2-element Array{Array{Complex{Float64},1},1}:
+ [-0.30901699437494745 - 0.9510565162951535im, 0.8090169943749473 - 0.5877852522924732im, 0.4999999999999999 - 1.5388417685876268im, 0.8090169943749475 + 0.587785252292473im, 0.5 - 0.3632712640026805im, 1.618033988749895 - 2.220446049250313e-16im, 1.3090169943749475 - 0.9510565162951538im, -0.30901699437494723 + 0.9510565162951536im, -0.6180339887498947 + 1.1102230246251565e-16im, 0.5000000000000001 + 0.3632712640026804im, 0.19098300562505266 - 0.5877852522924731im, 0.5000000000000002 + 1.5388417685876266im, 0.19098300562505277 + 0.5877852522924731im, 1.3090169943749477 + 0.9510565162951534im, 1.0000000000000002 - 1.1102230246251565e-16im]
+ [0.30901699437494745 + 0.9510565162951535im, -0.8090169943749473 + 0.5877852522924732im, -0.4999999999999999 + 1.5388417685876268im, -0.8090169943749475 - 0.587785252292473im, -0.5 + 0.3632712640026805im, -1.618033988749895 + 2.220446049250313e-16im, -1.3090169943749475 + 0.9510565162951538im, 0.30901699437494723 - 0.9510565162951536im, 0.6180339887498947 - 1.1102230246251565e-16im, -0.5000000000000001 - 0.3632712640026804im, -0.19098300562505266 + 0.5877852522924731im, -0.5000000000000002 - 1.5388417685876266im, -0.19098300562505277 - 0.5877852522924731im, -1.3090169943749477 - 0.9510565162951534im, -1.0000000000000002 + 1.1102230246251565e-16im]
+
+julia> vcat([w * vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]]...)
+30-element Array{Complex{Float64},1}:
+ -0.30901699437494745 - 0.9510565162951535im
+   0.8090169943749473 - 0.5877852522924732im
+   0.4999999999999999 - 1.5388417685876268im
+   0.8090169943749475 + 0.587785252292473im
+                  0.5 - 0.3632712640026805im
+    1.618033988749895 - 2.220446049250313e-16im
+                      ⋮
+ -0.19098300562505266 + 0.5877852522924731im
+  -0.5000000000000002 - 1.5388417685876266im
+ -0.19098300562505277 - 0.5877852522924731im
+  -1.3090169943749477 - 0.9510565162951534im
+  -1.0000000000000002 + 1.1102230246251565e-16im
+
+julia> vcat((vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] .* [-1,1])...)
+ERROR: DimensionMismatch("arrays could not be broadcast to a common size; got a dimension with lengths 15 and 2")
+Stacktrace:
+ [1] _bcs1 at ./broadcast.jl:501 [inlined]
+ [2] _bcs at ./broadcast.jl:495 [inlined]
+ [3] broadcast_shape at ./broadcast.jl:489 [inlined]
+ [4] combine_axes at ./broadcast.jl:484 [inlined]
+ [5] instantiate at ./broadcast.jl:266 [inlined]
+ [6] materialize(::Base.Broadcast.Broadcasted{Base.Broadcast.DefaultArrayStyle{1},Nothing,typeof(*),Tuple{Array{Complex{Float64},1},Array{Int64,1}}}) at ./broadcast.jl:837
+ [7] top-level scope at REPL[131]:1
+
+julia> vcat((vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] * [-1,1])...)
+ERROR: MethodError: no method matching *(::Array{Complex{Float64},1}, ::Array{Int64,1})
+Closest candidates are:
+  *(::Any, ::Any, ::Any, ::Any...) at operators.jl:538
+  *(::LinearAlgebra.Adjoint{var"#s828",var"#s8281"} where var"#s8281"<:(AbstractArray{T,1} where T) where var"#s828"<:Number, ::AbstractArray{var"#s827",1} where var"#s827"<:Number) at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/LinearAlgebra/src/adjtrans.jl:283
+  *(::LinearAlgebra.Transpose{T,var"#s828"} where var"#s828"<:(AbstractArray{T,1} where T), ::AbstractArray{T,1}) where T<:Real at /Users/julia/buildbot/worker/package_macos64/build/usr/share/julia/stdlib/v1.5/LinearAlgebra/src/adjtrans.jl:284
+  ...
+Stacktrace:
+ [1] top-level scope at REPL[132]:1
+
+julia> vcat((vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end]  [-1,1])...)
+ERROR: syntax: space before "[" not allowed in "vec(map(x -> begin
+    # REPL[133], line 1
+    sum((Z(5) .* x))
+end, Base.product(repeat([0:1], 4)...)))[2:end] [" at REPL[133]:1
+Stacktrace:
+ [1] top-level scope at none:1
+
+julia> vcat([w * vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]]...)
+30-element Array{Complex{Float64},1}:
+ -0.30901699437494745 - 0.9510565162951535im
+   0.8090169943749473 - 0.5877852522924732im
+   0.4999999999999999 - 1.5388417685876268im
+   0.8090169943749475 + 0.587785252292473im
+                  0.5 - 0.3632712640026805im
+    1.618033988749895 - 2.220446049250313e-16im
+                      ⋮
+ -0.19098300562505266 + 0.5877852522924731im
+  -0.5000000000000002 - 1.5388417685876266im
+ -0.19098300562505277 - 0.5877852522924731im
+  -1.3090169943749477 - 0.9510565162951534im
+  -1.0000000000000002 + 1.1102230246251565e-16im
+
+julia> plot(vcat([w * vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]]...))
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]]...))
+
+julia> scatter!(vcat([w * vec(map(x-> sum( Z(5) .* x), Base.product(repeat([0:1],4)...)))[2:end] for w in [-1,1]]...) .^ -1)
+
+julia> scatter!(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ 1)
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ 1)
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ 1,aspect_ratio=1)
+
+julia> scatter!(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ -1,aspect_ratio=1)
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ 1,aspect_ratio=1)
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ -1,aspect_ratio=1)
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ 1,aspect_ratio=1)
+
+julia> scatter!(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ -1,aspect_ratio=1)
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) .^ 2,aspect_ratio=1)
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 2,aspect_ratio=1)
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1)
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,markersize=1)
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,markersize=1.2)
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,markersize=1.2,xlims=[-5,5])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,markersize=1.2,xlims=[-5,5],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,markersize=1.2,xlims=[-5,5],ylims=[-5,5])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,markersize=1.2,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 2,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 1,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 4,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 5,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 6,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 5,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 7,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 5,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 5,aspect_ratio=1,xlims=[-0.5,0.5],ylims=[-0.5,0.5])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 5,aspect_ratio=1,xlims=[-0.1,0.1],ylims=[-0.1,0.1])
+
+julia> scatter( vec(map(x-> -1*sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 5,aspect_ratio=1,xlims=[-0.1,0.1],ylims=[-0.1,0.1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 4,aspect_ratio=1,xlims=[-0.1,0.1],ylims=[-0.1,0.1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 4,aspect_ratio=1,xlims=[-0.5,0.5],ylims=[-0.5,0.5])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,xlims=[-0.5,0.5],ylims=[-0.5,0.5])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] .^ 3,aspect_ratio=1,xlims=[-1,1],ylims=[-1,1])
+
+julia> scatter( vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] ,aspect_ratio=1 )
+
+julia> scatter( map(z-> z+ z^-1, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]) ,aspect_ratio=1 )
+
+julia> scatter( map(z-> z- z^-1, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]) ,aspect_ratio=1 )
+
+julia> scatter(vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...) ,aspect_ratio=1)
+
+julia> scatter(map(z-> z+z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1)
+
+julia> scatter(map(z-> z+z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=[-2,2])
+
+julia> scatter(map(z-> z+z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=2*[-1,1],ylims=2*[-1,1])
+
+julia> plot!(2*exp.(2*pi*im*collect(0:1/97:96/97)))
+
+julia> plot!(exp.(2*pi*im*collect(0:1/97:96/97)) .- 1)
+
+julia> plot!(2*exp.(2*pi*im*collect(0:1/97:96/97)) .- 1)
+
+julia> plot!(2*exp.(2*pi*im*collect(0:1/97:96/97)) .- 2)
+
+julia> scatter(map(z-> z+z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=2*[-1,1],ylims=2*[-1,1])
+
+julia> scatter(map(z-> z+z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=5*[-1,1],ylims=5*[-1,1])
+
+julia> scatter(map(z-> z+z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=3*[-1,1],ylims=3*[-1,1])
+
+julia> scatter(map(z-> z-z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=3*[-1,1],ylims=3*[-1,1])
+
+julia> scatter(map(z-> z-z^-1,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=[-1,1],ylims=[1,3])
+
+julia> scatter(map(z-> z,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1,xlims=2*[-1,1],ylims=2*[-1,1])
+
+julia> scatter(map(z-> z,vcat([w * vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end] for w in [-1,1]]...)),aspect_ratio=1)
+
+julia> scatter(map(z-> z, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1)
+
+julia> scatter(map(z-> z, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1,xticks=1)
+
+julia> scatter(map(z-> z, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1,xlims=[-2,2])
+
+julia> scatter(map(z-> z, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1)
+
+julia> scatter(map(z-> 1/(1-z), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1)
+
+julia> scatter(map(z-> 1/(1-z), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=2,xlims=[0,2])
+
+julia> scatter(map(z-> 1/(1-z), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1/2,xlims=[0,2])
+
+julia> scatter(map(z-> (1-z), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1/2,xlims=[0,2])
+
+julia> scatter(map(z-> (1-z), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1)
+
+julia> scatter(map(z-> z^-1, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1)
+
+julia> scatter(map(z-> z, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]),aspect_ratio=1)
+
+julia> map(z-> z^7, vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end])
+63-element Array{Complex{Float64},1}:
+    1.0000000000000004 - 4.996003610813204e-16im
+    1.0000000000000002 - 5.551115123125783e-16im
+   -61.684842753312296 + 3.197442310920451e-14im
+    0.9999999999999998 - 1.0547118733938987e-15im
+     4.688300602821341 - 3.1086244689504383e-15im
+    -61.68484275331228 + 4.263256414560601e-14im
+                       ⋮
+ 0.0034578495090677908 - 1.0191500421363742e-17im
+   -289.19708546529387 + 2.1316282072803006e-13im
+   -4.6883006028213465 + 5.329070518200751e-15im
+     61.68484275331235 - 3.019806626980426e-14im
+   -1.0000000000000016 - 7.771561172376106e-16im
+
+julia> map(z-> round(real(z^7),5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end])
+ERROR: MethodError: no method matching round(::Float64, ::Int64)
+Closest candidates are:
+  round(::Float64, ::RoundingMode{:Nearest}) at float.jl:376
+  round(::Float64, ::RoundingMode{:Up}) at float.jl:374
+  round(::Float64, ::RoundingMode{:Down}) at float.jl:372
+  ...
+Stacktrace:
+ [1] (::var"#397#399")(::Complex{Float64}) at ./REPL[201]:1
+ [2] iterate at ./generator.jl:47 [inlined]
+ [3] _collect at ./array.jl:699 [inlined]
+ [4] collect_similar(::Array{Complex{Float64},1}, ::Base.Generator{Array{Complex{Float64},1},var"#397#399"}) at ./array.jl:628
+ [5] map(::Function, ::Array{Complex{Float64},1}) at ./abstractarray.jl:2162
+ [6] top-level scope at REPL[201]:1
+
+julia> map(z-> round(real(z^7),0.01), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end])
+ERROR: MethodError: no method matching round(::Float64, ::Float64)
+Closest candidates are:
+  round(::Float64, ::RoundingMode{:Nearest}) at float.jl:376
+  round(::Float64, ::RoundingMode{:Up}) at float.jl:374
+  round(::Float64, ::RoundingMode{:Down}) at float.jl:372
+  ...
+Stacktrace:
+ [1] (::var"#401#403")(::Complex{Float64}) at ./REPL[202]:1
+ [2] iterate at ./generator.jl:47 [inlined]
+ [3] _collect at ./array.jl:699 [inlined]
+ [4] collect_similar(::Array{Complex{Float64},1}, ::Base.Generator{Array{Complex{Float64},1},var"#401#403"}) at ./array.jl:628
+ [5] map(::Function, ::Array{Complex{Float64},1}) at ./abstractarray.jl:2162
+ [6] top-level scope at REPL[202]:1
+
+help?> round
+search: round rounding RoundUp RoundDown RoundToZero RoundingMode RoundNearest RoundFromZero RoundNearestTiesUp RoundNearestTiesAway setrounding set_zero_subnormals get_zero_subnormals process_running
+
+  round(z::Complex[, RoundingModeReal, [RoundingModeImaginary]])
+  round(z::Complex[, RoundingModeReal, [RoundingModeImaginary]]; digits=, base=10)
+  round(z::Complex[, RoundingModeReal, [RoundingModeImaginary]]; sigdigits=, base=10)
+
+  Return the nearest integral value of the same type as the complex-valued z to z, breaking ties using the specified RoundingModes. The first RoundingMode is used for rounding the real components
+  while the second is used for rounding the imaginary components.
+
+  Example
+  ≡≡≡≡≡≡≡≡≡
+
+  julia> round(3.14 + 4.5im)
+  3.0 + 4.0im
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  round([T,] x, [r::RoundingMode])
+  round(x, [r::RoundingMode]; digits::Integer=0, base = 10)
+  round(x, [r::RoundingMode]; sigdigits::Integer, base = 10)
+
+  Rounds the number x.
+
+  Without keyword arguments, x is rounded to an integer value, returning a value of type T, or of the same type of x if no T is provided. An InexactError will be thrown if the value is not
+  representable by T, similar to convert.
+
+  If the digits keyword argument is provided, it rounds to the specified number of digits after the decimal place (or before if negative), in base base.
+
+  If the sigdigits keyword argument is provided, it rounds to the specified number of significant digits, in base base.
+
+  The RoundingMode r controls the direction of the rounding; the default is RoundNearest, which rounds to the nearest integer, with ties (fractional values of 0.5) being rounded to the nearest even
+  integer. Note that round may give incorrect results if the global rounding mode is changed (see rounding).
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> round(1.7)
+  2.0
+  
+  julia> round(Int, 1.7)
+  2
+  
+  julia> round(1.5)
+  2.0
+  
+  julia> round(2.5)
+  2.0
+  
+  julia> round(pi; digits=2)
+  3.14
+  
+  julia> round(pi; digits=3, base=2)
+  3.125
+  
+  julia> round(123.456; sigdigits=2)
+  120.0
+  
+  julia> round(357.913; sigdigits=4, base=2)
+  352.0
+
+  │ Note
+  │
+  │  Rounding to specified digits in bases other than 2 can be inexact when operating on binary floating point numbers. For example, the Float64 value represented by 1.15 is actually less
+  │  than 1.15, yet will be rounded to 1.2.
+  │
+  │  Examples
+  │  ≡≡≡≡≡≡≡≡≡≡
+  │
+  │  julia> x = 1.15
+  │  1.15
+  │  
+  │  julia> @sprintf "%.20f" x
+  │  "1.14999999999999991118"
+  │  
+  │  julia> x < 115//100
+  │  true
+  │  
+  │  julia> round(x, digits=1)
+  │  1.2
+
+  Extensions
+  ≡≡≡≡≡≡≡≡≡≡≡≡
+
+  To extend round to new numeric types, it is typically sufficient to define Base.round(x::NewType, r::RoundingMode).
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  round(dt::TimeType, p::Period, [r::RoundingMode]) -> TimeType
+
+  Return the Date or DateTime nearest to dt at resolution p. By default (RoundNearestTiesUp), ties (e.g., rounding 9:30 to the nearest hour) will be rounded up.
+
+  For convenience, p may be a type instead of a value: round(dt, Dates.Hour) is a shortcut for round(dt, Dates.Hour(1)).
+
+  julia> round(Date(1985, 8, 16), Dates.Month)
+  1985-08-01
+  
+  julia> round(DateTime(2013, 2, 13, 0, 31, 20), Dates.Minute(15))
+  2013-02-13T00:30:00
+  
+  julia> round(DateTime(2016, 8, 6, 12, 0, 0), Dates.Day)
+  2016-08-07T00:00:00
+
+  Valid rounding modes for round(::TimeType, ::Period, ::RoundingMode) are RoundNearestTiesUp (default), RoundDown (floor), and RoundUp (ceil).
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  round(x::Period, precision::T, [r::RoundingMode]) where T <: Union{TimePeriod, Week, Day} -> T
+
+  Round x to the nearest multiple of precision. If x and precision are different subtypes of Period, the return value will have the same type as precision. By default (RoundNearestTiesUp), ties
+  (e.g., rounding 90 minutes to the nearest hour) will be rounded up.
+
+  For convenience, precision may be a type instead of a value: round(x, Dates.Hour) is a shortcut for round(x, Dates.Hour(1)).
+
+  julia> round(Dates.Day(16), Dates.Week)
+  2 weeks
+  
+  julia> round(Dates.Minute(44), Dates.Minute(15))
+  45 minutes
+  
+  julia> round(Dates.Hour(36), Dates.Day)
+  2 days
+
+  Valid rounding modes for round(::Period, ::T, ::RoundingMode) are RoundNearestTiesUp (default), RoundDown (floor), and RoundUp (ceil).
+
+  Rounding to a precision of Months or Years is not supported, as these Periods are of inconsistent length.
+
+julia> map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end])
+63-element Array{Float64,1}:
+    1.0
+    1.0
+  -61.68484
+    1.0
+    4.6883
+  -61.68484
+    ⋮
+    0.00346
+ -289.19709
+   -4.6883
+   61.68484
+   -1.0
+
+julia> unique(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))
+16-element Array{Float64,1}:
+   1.0
+ -61.68484
+   4.6883
+ 289.19709
+  -0.00346
+   6.5
+   ⋮
+  61.68484
+  -0.01621
+  -4.6883
+   0.00346
+  -1.0
+
+julia> plot(sort(unique(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))))
+
+julia> barplot(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))
+ERROR: UndefVarError: barplot not defined
+Stacktrace:
+ [1] top-level scope at REPL[207]:1
+
+julia> bar(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))
+
+help?> bin
+search: bind binomial hexbin hexbin! BigInt begin SubString rgb_string bitstring rgba_string disable_sigint SubstitutionString reenable_sigint AbstractString AbstractUnitRange AbstractIrrational
+
+Couldn't find bin
+Perhaps you meant bind, big, in, min, sin, begin, bar, Main, n, gif, pie, Cint, asin, cis, div, im, inv, join, pi, run, sign, sinc, sind, sinh, tan, zip, if, hexbin, BGR, bar!, barh, bbox, blue or abs
+  No documentation found.
+
+  Binding bin does not exist.
+
+help?> bar
+search: bar barh bar! barh! barhist barhist! baremodule SubArray GlobalRef clipboard BitArray backtrace rgba_string BitMatrix catch_backtrace AbstractRGB AbstractRGBA AbstractRange AbstractGray
+
+  bar(x,y)
+  bar!(x,y)
+
+  Make a bar plot of y vs x.
+
+  Arguments
+  ≡≡≡≡≡≡≡≡≡≡≡
+
+    •    bar_position: Symbol. Choose from :overlay (default), :stack. (warning: May not be implemented fully)
+
+    •    bar_width: nothing or Number. Width of bars in data coordinates. When nothing, chooses based on x (or y when orientation = :h).
+
+    •    bar_edges: Bool. Align bars to edges (true), or centers (the default)?
+
+    •    orientation: Symbol. Horizontal or vertical orientation for bar types. Values :h, :hor, :horizontal correspond to horizontal (sideways, anchored to y-axis), and :v, :vert, and :vertical
+        correspond to vertical (the default).
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> bar([1,2,3],[4,5,6],fillcolor=[:red,:green,:blue],fillalpha=[0.2,0.4,0.6])
+  julia> bar([(1,4),(2,5),(3,6)])
+
+help?> histogram
+search: histogram histogram! histogram2d histogram2d!
+
+  histogram(x)
+  histogram!(x)
+
+  Plot a histogram.
+
+  Arguments
+  ≡≡≡≡≡≡≡≡≡≡≡
+
+    •    x: AbstractVector of values to be binned
+
+    •    bins: Integer, NTuple{2,Integer}, AbstractVector or Symbol. Default is :auto (the Freedman-Diaconis rule). For histogram-types, defines the approximate number of bins to aim for, or the
+        auto-binning algorithm to use (:sturges, :sqrt, :rice, :scott or :fd). For fine-grained control pass a Vector of break values, e.g. range(minimum(x),          stop = maximum(x), length =
+        25)
+
+    •    weights: Vector of weights for the values in x, for weighted bin counts
+
+    •    normalize: Bool or Symbol. Histogram normalization mode. Possible values are: false/:none (no normalization, default), true/:pdf (normalize to a discrete Probability Density Function,
+        where the total area of the bins is 1), :probability (bin heights sum to 1) and :density (the area of each bin, rather than the height, is equal to the counts - useful for uneven bin
+        sizes).
+
+    •    bar_position: Symbol. Choose from :overlay (default), :stack. (warning: May not be implemented fully)
+
+    •    bar_width: nothing or Number. Width of bars in data coordinates. When nothing, chooses based on x (or y when orientation = :h).
+
+    •    bar_edges: Bool. Align bars to edges (true), or centers (the default)?
+
+    •    orientation: Symbol. Horizontal or vertical orientation for bar types. Values :h, :hor, :horizontal correspond to horizontal (sideways, anchored to y-axis), and :v, :vert, and :vertical
+        correspond to vertical (the default).
+
+  Example
+  ≡≡≡≡≡≡≡≡≡
+
+  julia> histogram([1,2,1,1,4,3,8],bins=0:8)
+  julia> histogram([1,2,1,1,4,3,8],bins=0:8,weights=weights([4,7,3,9,12,2,6]))
+
+julia> histogram(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))
+
+julia> sort(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))
+63-element Array{Float64,1}:
+ -289.19709
+ -289.19709
+ -289.19709
+  -61.68484
+  -61.68484
+  -61.68484
+    ⋮
+   61.68484
+  289.19709
+  289.19709
+  289.19709
+  289.19709
+
+julia> unique(sort(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end])))
+16-element Array{Float64,1}:
+ -289.19709
+  -61.68484
+   -6.5
+   -4.6883
+   -1.0
+   -0.2133
+    ⋮
+    1.0
+    4.6883
+    6.5
+   61.68484
+  289.19709
+
+julia> print(unique(sort(map(z-> round(real(z^7),digits=5), vec(map(x-> sum( Z(7) .* x), Base.product(repeat([0:1],6)...)))[2:end]))))
+[-289.19709, -61.68484, -6.5, -4.6883, -1.0, -0.2133, -0.01621, -0.00346, 0.00346, 0.01621, 0.2133, 1.0, 4.6883, 6.5, 61.68484, 289.19709]
+julia> 
