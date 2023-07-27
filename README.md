@@ -1,0 +1,3 @@
+# maths
+this is a consolidation of files. various folders from various times. off the top of my head: tread carefully around res or ind rep & that may vary across files... 
+some of this is useful.
