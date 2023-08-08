@@ -13,7 +13,7 @@ j(p) = Int8[ c==p-1 ? -1 : mod(c,p)==r-1 for r in 1:p-1,c in 1:p-1];
 G(p) = map(n->g(p)^n, 0:p-1)
 J(p) = map(n->j(p)^n, 0:p-1)
 
-L(p)= vec(map(x-> sum( C_x(p) .* x), Base.product(repeat([0:1],p-1)...)))
-L_x(p)= L(p)[2:end]
+L(p)= p==1 ? [1] : vec(map(x-> sum( C_x(p) .* x), Base.product(repeat([0:1],p-1)...)))
+L_x(p)= p==1 ? [] : L(p)[2:end]
 
 scatter(L(p),aspect_ratio=1)
